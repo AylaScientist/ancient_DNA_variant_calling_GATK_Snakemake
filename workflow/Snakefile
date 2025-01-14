@@ -1,0 +1,30 @@
+configfile: '../config/config.yaml'
+print(config)
+
+##### Target rules #####
+
+import pandas as pd
+import os
+
+samples = pd.read_csv ( config['Sample_names'] )
+
+# Create arrays of the sample names
+samples = samples['Sample_name'].values
+print(samples)
+
+
+rule all:
+    input:
+        o1= config['results_DNA']['o1'],
+        dicti= config['ref']['dict'],
+        fai= config['ref']['fai']     
+
+
+##### Modules #####
+###################
+include: "rules/pre_processing.smk"     # Genome index, prepare fastq files and mapping
+include: "rules/post_mapping.smk"
+include: "rules/variants_calling.smk"
+include: "rules/annotationHuman.smk"    # WARNING! For annotation of SNP using the ANNOVAR premade database on hg38.
+include: "rules/variant_to_table.smk"
+

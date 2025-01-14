@@ -1,0 +1,12 @@
+Full Traceback (most recent call last):
+  File "/home/ayla/anaconda3/envs/snakemake/lib/python3.8/site-packages/snakemake/__init__.py", line 619, in snakemake
+    workflow.include(
+  File "/home/ayla/anaconda3/envs/snakemake/lib/python3.8/site-packages/snakemake/workflow.py", line 1206, in include
+    exec(compile(code, snakefile.get_path_or_uri(), "exec"), self.globals)
+  File "/home/ayla/Dropbox/Ancient genotypes/DNA_variant_calling_GATK_Snakemake/workflow/Snakefile", line 15, in <module>
+    print(test)
+KeyError: 'input_files'
+
+KeyErrorin line 14 of /home/ayla/Dropbox/Ancient genotypes/DNA_variant_calling_GATK_Snakemake/workflow/Snakefile:
+'input_files'
+  File "/home/ayla/Dropbox/Ancient genotypes/DNA_variant_calling_GATK_Snakemake/workflow/Snakefile", line 14, in <module>

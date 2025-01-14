@@ -1,0 +1,110 @@
+# Please check the parameters, and adjust them according to your circumstance
+
+# Project name
+PROJECT: Human_Posth_2023
+
+# ================== Control of the workflow ==================
+
+# Provide with these files in order to proceed with the workflow:
+#Sample_names: config/Sample_names.csv
+Sample_names: ../config/Sample_names.csv
+bams: /home/ayla/Dropbox/Ancient_genotypes/Posth_bams/ #folder with the bam files if they are available
+
+## Resources of the system:
+# Set the java_opts according the threads and mem_mb specified
+# Note that -Xms parameter refers to a minimum to use, shouldn't be the max mem
+
+#gpu: 4
+cpu: 33
+
+#jobs_per_gpu: 6
+#jobs_per_cpu: 1 threads per job
+
+#Parallel_jobs: Is the total resources divided by the number of samples, 4 in this case
+java_opts_parallel: "-XX:MinRAMPercentage=80.0 -Xmx88G -Xms60G -XX:+UseParallelGC -XX:ParallelGCThreads=11 -XX:+UseTLAB"
+threads_parallel: 11 # that refers to the number of cores. The parallel threads are defined above
+mem_mb_parallel: 88000 
+
+
+#Combine: Is total resources divided by two pseudogenomes
+java_opts_combine: "-XX:MinRAMPercentage=80.0 -Xmx264G -Xms198G -XX:+UseParallelGC -XX:ParallelGCThreads=33 -XX:+UseTLAB"
+threads_combine: 33 # that refers to the number of cores. The parallel threads are defined above
+mem_mb_combine: 264000
+
+#Reference genome: Total resources for rules that do not have parallel works.
+java_opts: "-XX:MinRAMPercentage=80.0 -Xmx264G -Xms198G -XX:+UseParallelGC -XX:ParallelGCThreads=33 -XX:+UseTLAB"
+threads: 33 # that refers to the number of cores. The parallel threads are defined above
+mem_mb: 264000
+
+# Path to workflow with relation to snakefile. Can vary depending on your HPC configuration
+path: "/vivianelabsf/Ayla/DNA_variant_calling_GATK_Snakemake/"
+
+#For DNA:
+results_DNA:
+  o1: "workflow/variants_table.tsv"
+
+error: "results/Error_in_SNP_calling.csv"
+
+ref:
+  # ensembl species name
+  species: Homo sapiens
+  # ensembl release
+  release: 38
+  # genome build
+  build: hg38
+  # file name
+  genome: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.fa"
+  annotation: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.gff3"   #gff3 file
+  gtf: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.gtf"
+  # index:
+  dir: "GRCh38/"
+  bwa_idx: "multiext("GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.fa", ".amb", ".ann", ".bwt", ".pac", ".sa")"
+  SAindex: "GRCh38/SAindex"
+  dict: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.dict"
+  fai: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.fa.fai"
+  read_length: 80 # Read length - 1
+  path: "/vivianelabfs/ayla/DNA_variant_calling_GATK_Snakemake/workflow/GRCh38/"
+  list: "../config/mthfr.list"
+
+filtering:
+  # Set to true in order to apply machine learning based recalibration of
+  # quality scores instead of hard filtering.
+  vqsr: false
+  hard:
+    # hard filtering as outlined in GATK docs
+    # (https://gatkforums.broadinstitute.org/gatk/discussion/2806/howto-apply-hard-filters-to-a-call-set)
+    snvs:
+      "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0"
+    indels:
+      "QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0"
+
+params:
+  adapters: "--adapter1 ACGGCTAGCTA"
+  trimmomatic:
+    path: "/data/bin/miniconda2/envs/trimmomatic-v038/share/trimmomatic-0.38-1/trimmomatic.jar" #The path to your .jar trimmomatic
+    se:
+      trimmer:
+        # See trimmomatic manual for adding additional options, e.g. for adapter trimming.
+        # Adapted for aDNA
+        - "ILLUMINACLIP:.config/TruSeq3-PE-2.fa:2:15:5:2:TRUE "
+        - "LEADING:3 "
+        - "TRAILING:3 "
+        - "SLIDINGWINDOW:4:15 "
+        - "MINLEN:30 "
+  gatk:
+    HaplotypeCaller: ""
+    BaseRecalibrator: ""
+    GenotypeGVCFs: ""
+    VariantRecalibrator: ""
+  picard:
+    MarkDuplicates: "REMOVE_DUPLICATES=false"
+  annotation:
+    buildver: "hg38"
+    pathbuild: "GRCh38/hg38"
+    path: "GRCh38"
+    dbtype: "snp151" #snp150 for hg19
+    output: ".hg38_multianno.vcf"
+    extra: "-SMA TRUE -F CHROM -F POS -F Gene.refGene -F Func.refGene -F ExonicFunc.refGene -F AF -GF AD -GF GT"
+    #Change the name of the example species (Mozambique) into your studied species
+    convert: "annotated/annovar_Homo_sapiens_"
+    output_annotate: "annotated/annotated_Homo_sapiens_snps_"
