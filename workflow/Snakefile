@@ -17,7 +17,8 @@ rule all:
     input:
         o1= config['results_DNA']['o1'],
         dicti= config['ref']['dict'],
-        fai= config['ref']['fai']     
+        fai= config['ref']['fai'],
+        GtoA3p="results/{sample}/3pGtoA_freq.txt",     
 
 
 ##### Modules #####

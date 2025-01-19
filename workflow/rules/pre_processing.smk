@@ -57,20 +57,3 @@ rule trimmomatic_filter:
         mem_mb=config['mem_mb_parallel']
     script:
         "scripts/trimmomatic_SE.py"
-
-
-rule bwa_aln:
-    input:
-        fastq="trimmed/{sample}.1.fastq",
-        idx=config['ref']["bwa_idx"],
-    output:
-        "sai/{sample}.sai",
-    params:
-        extra="",
-    log:
-        "logs/bwa_aln/{sample}.log",
-    threads: config['threads_parallel']
-    resources:
-        mem_mb=config['mem_mb_parallel']
-    script:
-        "scripts/bwa_aln.py"

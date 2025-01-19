@@ -24,5 +24,5 @@ shell(
     " -t {snakemake.threads}"
     " {index}"
     " {snakemake.input.fastq}"
-    " | samtools view -Sb - {snakemake.output[0]} {log}"
+    " > {snakemake.output[0]} {log}"
 )
