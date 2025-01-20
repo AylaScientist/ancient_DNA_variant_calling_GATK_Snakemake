@@ -64,6 +64,7 @@ rule annotate:
     input:
         i1=config['params']['annotation']['convert'],
         buildver= config['params']['annotation']['buildver'],
+        dbtype=config['params']['annotation']['dbtype'],
     output:
         o2=config['params']['annotation']['output_annotate'] + ".exonic_variant_function"
     params:
