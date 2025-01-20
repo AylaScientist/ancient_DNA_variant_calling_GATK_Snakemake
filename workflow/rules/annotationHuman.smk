@@ -33,6 +33,33 @@ rule token_pathbuild:
     shell:
         "touch {output.o1} "
 
+
+# Collect the annotations in the db
+rule annotate_download_db:
+    input:
+        i1=config['params']['annotation']['convert'],
+        buildver= config['params']['annotation']['buildver'],
+    output:
+        o2=config['params']['annotation']['output_annotate'] + ".exonic_variant_function",
+        dbtype=config['params']['annotation']['dbtype'],
+    params:
+        i2=config['params']['annotation']['output_annotate'],
+        dbtype=config['params']['annotation']['dbtype'],
+        path = config['params']['annotation']['path']
+    log:
+        log=config['params']['annotation']['output_annotate']+".log"
+    resources:
+        mem_mb=config['mem_mb']
+    threads: config['threads']
+    conda:
+        "envs/perl.yaml"
+    shell:
+        #"perl ./rules/scripts/annotate_variation.pl -geneanno {input.i1} -buildver {input.buildver} ./ -outfile {params.i2}" #for annotating genes
+        #"perl ./rules/scripts/annotate_variation.pl -geneanno {input.i1} -buildver hg19 -downdb -webfrom annovar refGene {params.path}/ -outfile {params.i2}" #To download the db for annotating genes
+        "perl ./rules/scripts/annotate_variation.pl -buildver {input.buildver} -downdb {params.dbtype} -webfrom annovar {params.dbtype} / -outfile {params.i2}" #To download the SNPdb 
+        
+
+
 # Collect the annotations in the db
 rule annotate:
     input:
@@ -54,9 +81,7 @@ rule annotate:
     shell:
         #"perl ./rules/scripts/annotate_variation.pl -geneanno {input.i1} -buildver {input.buildver} ./ -outfile {params.i2}" #for annotating genes
         #"perl ./rules/scripts/annotate_variation.pl -geneanno {input.i1} -buildver hg19 -downdb -webfrom annovar refGene {params.path}/ -outfile {params.i2}" #To download the db for annotating genes
-        #"perl ./rules/scripts/annotate_variation.pl -buildver {input.buildver} -downdb {params.dbtype} -webfrom annovar {params.dbtype} / -outfile {params.i2}" #To download the SNPdb 
         "perl ./rules/scripts/annotate_variation.pl -filter -buildver {input.buildver} -dbtype {params.dbtype} {params.path}/ -outfile {params.i2}" #for annotating SNPs
-
 
 
 # Make tokens for the tables with the annotation:

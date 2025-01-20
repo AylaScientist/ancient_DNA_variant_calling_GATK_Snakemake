@@ -15,10 +15,12 @@ print(samples)
 
 rule all:
     input:
-        o1= config['results_DNA']['o1'],
+        vcf="variants/GT_SNP.table",
         dicti= config['ref']['dict'],
         fai= config['ref']['fai'],
         GtoA3p="results/{sample}/3pGtoA_freq.txt",     
+        dbtype=config['params']['annotation']['dbtype'],
+        
 
 
 ##### Modules #####
