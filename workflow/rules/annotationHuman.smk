@@ -40,7 +40,6 @@ rule annotate_download_db:
         i1=config['params']['annotation']['convert'],
         buildver= config['params']['annotation']['buildver'],
     output:
-        o2=config['params']['annotation']['output_annotate'] + ".exonic_variant_function",
         dbtype=config['params']['annotation']['dbtype'],
     params:
         i2=config['params']['annotation']['output_annotate'],
@@ -56,7 +55,7 @@ rule annotate_download_db:
     shell:
         #"perl ./rules/scripts/annotate_variation.pl -geneanno {input.i1} -buildver {input.buildver} ./ -outfile {params.i2}" #for annotating genes
         #"perl ./rules/scripts/annotate_variation.pl -geneanno {input.i1} -buildver hg19 -downdb -webfrom annovar refGene {params.path}/ -outfile {params.i2}" #To download the db for annotating genes
-        "perl ./rules/scripts/annotate_variation.pl -buildver {input.buildver} -downdb {params.dbtype} -webfrom annovar {params.dbtype} / -outfile {params.i2}" #To download the SNPdb 
+        "perl ./rules/scripts/annotate_variation.pl -buildver {input.buildver} -downdb {params.dbtype} -webfrom annovar {params.dbtype} / -outfile {params.dbtype}" #To download the SNPdb 
         
 
 

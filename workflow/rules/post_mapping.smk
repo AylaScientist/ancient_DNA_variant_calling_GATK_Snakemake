@@ -1,6 +1,6 @@
 rule map_damage:
     input:
-        ref="genome.fasta",
+        ref=config['ref']['genome'],
         bam="bam/{sample}.bam",
     output:
         log="results/{sample}/Runtime_log.txt",  # output folder is infered from this file, so it needs to be the same folder for all output files
