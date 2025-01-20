@@ -26,7 +26,7 @@ rule map_damage:
 
 rule add_replace_rg:
     input:
-        bam="bam/{sample}.bam",
+        "bam/{sample}.bam",
     output:
         "fixed-rg/{sample}_ref.bam"
     conda:
