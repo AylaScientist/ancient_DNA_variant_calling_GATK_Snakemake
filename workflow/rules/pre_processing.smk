@@ -16,7 +16,7 @@ rule bwa_index:
 
 rule adapter_removal_se:
     input:
-        sample = "fastq_merged/{sample}.fastq.gz",
+        sample = ["fastq_merged/{sample}.fastq.gz"],
     output:
         fq="trimmed/se/{sample}.fastq.gz",                               # trimmed reads
         discarded="trimmed/se/{sample}.discarded.fastq.gz",              # reads that did not pass filters
