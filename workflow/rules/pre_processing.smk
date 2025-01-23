@@ -32,7 +32,7 @@ rule adapter_removal_se:
     script:
         "scripts/adapter_removal_SE.py"
 
-
+"""
 rule trimmomatic_filter:
     input:
         r1 = "trimmed/se/{sample}.fastq.gz",
@@ -57,3 +57,4 @@ rule trimmomatic_filter:
         mem_mb=config['mem_mb_parallel']
     script:
         "scripts/trimmomatic_SE.py"
+"""

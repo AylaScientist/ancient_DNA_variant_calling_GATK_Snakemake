@@ -1,6 +1,7 @@
 rule haplotype_caller_gene:
     input:
         bam="marked_dedup/{sample}_ref.bam",
+        index = "marked_dedup/{sample}_ref.bam.bai",
         ref=config['ref']['genome'],
         l_genes=config['ref']['list'],
     output:

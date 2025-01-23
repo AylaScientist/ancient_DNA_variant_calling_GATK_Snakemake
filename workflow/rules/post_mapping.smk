@@ -61,3 +61,19 @@ rule mark_duplicates:
         mem_mb=config['mem_mb_parallel']
     script:
         "scripts/mark_duplicates.py"
+
+
+rule samtools_index:
+    input:
+        "marked_dedup/{sample}_ref.bam",
+    output:
+        "marked_dedup/{sample}_ref.bam.bai",
+    log:
+        "logs/samtools_index/{sample}.log",
+    params:
+        extra="",  # optional params string
+    threads: config['threads_parallel']
+    resources:
+        mem_mb=config['mem_mb_parallel']
+    script:
+        "scripts/samtools_index.py"

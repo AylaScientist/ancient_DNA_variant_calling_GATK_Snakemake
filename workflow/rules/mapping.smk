@@ -1,7 +1,7 @@
 
 rule bwa_aln:
     input:
-        fastq="trimmed/{sample}.1.fastq",
+        fastq="trimmed/se/{sample}.fastq.gz",
         idx=config['ref']["bwa_idx"],
     output:
         "sai/{sample}.sai",
@@ -18,7 +18,7 @@ rule bwa_aln:
 
 rule bwa_samse:
     input:
-        fastq="trimmed/{sample}.1.fastq",
+        fastq="trimmed/se/{sample}.fastq.gz",
         sai="sai/{sample}.sai",
         idx=config['ref']["bwa_idx"],
     output:
