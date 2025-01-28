@@ -16,10 +16,10 @@ rule run_angsd:
         min_baseq=20                   # Minimum base quality
     log:
         "logs/angsd_snp_calling.log"
-    threads: config['threads_parallel']
+    threads: config['threads']
     resources:
-        mem_mb=config['mem_mb_parallel']
+        mem_mb=config['mem_mb']
     script:
-        "scripts/mapdamage2.py"
+        "scripts/angsd.py"
 
     

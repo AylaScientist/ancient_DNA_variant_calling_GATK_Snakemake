@@ -53,7 +53,7 @@ rule mark_duplicates:
     log:
         "logs/picard/dedup/{sample}.log"
     params:
-        extra = "REMOVE_DUPLICATES=true", #Duplicates can also be removed with UMI-tools
+        extra = "REMOVE_DUPLICATES=false", #Duplicates can also be removed with UMI-tools
         java_opts=config['java_opts_parallel'],
     threads: config['threads_parallel']
     resources:

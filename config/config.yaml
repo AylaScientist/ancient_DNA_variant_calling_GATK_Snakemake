@@ -7,7 +7,7 @@ PROJECT: Human_Posth_2023
 
 # Provide with these files in order to proceed with the workflow:
 #Sample_names: config/Sample_names.csv
-Sample_names: ../config/Sample_names.csv
+Sample_names: ../config/sample_names_fastq
 bams: /home/ayla/Dropbox/Ancient_genotypes/Posth_bams/ #folder with the bam files if they are available
 
 ## Resources of the system:
