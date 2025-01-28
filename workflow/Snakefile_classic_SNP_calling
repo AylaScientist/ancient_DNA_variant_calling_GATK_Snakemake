@@ -29,3 +29,8 @@ include: "rules/pre_processing.smk"
 include: "rules/mapping.smk"
 include: "rules/post_mapping.smk"
 include: "rules/angsd.smk"
+
+## For classic SNP calling on not so damaged DNA
+#include: "rules/variants_calling.smk"
+#include: "rules/annotationHuman.smk"    # WARNING! For annotation of SNP using the ANNOVAR premade database on hg38.
+#include: "rules/variants_to_table.smk"

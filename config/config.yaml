@@ -65,6 +65,7 @@ ref:
   read_length: 80 # Read length - 1
   path: "/vivianelabfs/ayla/DNA_variant_calling_GATK_Snakemake/workflow/GRCh38/"
   list: "../config/mthfr.list"
+  bed: "../config/target_snps.bed"
 
 filtering:
   # Set to true in order to apply machine learning based recalibration of
@@ -102,7 +103,7 @@ params:
     buildver: "hg38"
     pathbuild: "GRCh38/hg38"
     path: "GRCh38"
-    dbtype: "snp151" #snp150 for hg19
+    dbtype: "avsnp151" #avsnp150 for hg19
     output: ".hg38_multianno.vcf"
     extra: "-SMA TRUE -F CHROM -F POS -F Gene.refGene -F Func.refGene -F ExonicFunc.refGene -F AF -GF AD -GF GT"
     #Change the name of the example species (Mozambique) into your studied species

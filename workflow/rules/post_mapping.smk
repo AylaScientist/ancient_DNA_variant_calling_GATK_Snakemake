@@ -16,7 +16,6 @@ rule map_damage:
         extra="--no-stats",  # optional parameters for mapdamage2 (except -i, -r, -d, --rescale)
     log:
         "logs/{sample}/mapdamage2.log",
-
     threads: config['threads_parallel']
     resources:
         mem_mb=config['mem_mb_parallel']

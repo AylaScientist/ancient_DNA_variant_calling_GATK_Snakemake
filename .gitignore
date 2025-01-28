@@ -2,3 +2,11 @@ workflow/fastq_merged/
 workflow/GRCh38/
 previous_backup/
 config/mthfr_backup.list
+workflow/calls/
+workflow/GRCh38/
+humandb/
+.snakemake/
+.gitignore
+DNA_variant_calling_GATK_Snakemake.code
+mthfr_backup.list
+results_mapdamage/
