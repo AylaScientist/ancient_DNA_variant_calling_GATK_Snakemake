@@ -14,6 +14,19 @@ rule bwa_index:
         "scripts/bwa_index.py"
 
 
+rule samtools_fai:
+    input:
+        config['ref']['genome'],
+    output:
+        config['ref']['fai'],
+    threads: config['threads']
+    resources:
+        mem_mb=config['mem_mb']
+    shell:
+        (f"samtools faidx {input}")
+
+
+
 rule adapter_removal_se:
     input:
         sample = ["fastq_merged/{sample}.fastq.gz"],

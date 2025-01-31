@@ -10,3 +10,4 @@ humandb/
 DNA_variant_calling_GATK_Snakemake.code
 mthfr_backup.list
 results_mapdamage/
+marked_dedup/
