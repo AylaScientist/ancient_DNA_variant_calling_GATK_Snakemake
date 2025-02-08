@@ -1,0 +1,8 @@
+marked_dedup/ERR10693105_ref.bam
+marked_dedup/ERR10693106_ref.bam
+marked_dedup/ERR10693107_ref.bam
+marked_dedup/ERR10693108_ref.bam
+marked_dedup/ERR10693109_ref.bam
+marked_dedup/ERR10693110_ref.bam
+marked_dedup/ERR10693111_ref.bam
+marked_dedup/ERR10693112_ref.bam

@@ -63,7 +63,7 @@ ANGSD supports different genotype likelihood models:
 angsd_cmd = (
     f"angsd "
     f" -doGlf 2 -GL 2"  # Output genotype likelihoods in Beagle format., Chosen GL2 as GATK likelihood model
-    f" -doMajorMinor 1"
+    f" -doMajorMinor 3"
     f" -doMaf 2"  # Output individual-level minor allele frequencies.
     f" -doPost 1"  # Calculate posterior genotype probabilities from likelihoods.
     f" -bam {bam_list_file}"
@@ -72,7 +72,7 @@ angsd_cmd = (
     f" -minMapQ {snakemake.params.min_mapq}"
     f" -minQ {snakemake.params.min_baseq}"
     f" -sites {snakemake.input.sites}"
-    f" -nThreads {snakemake.threads} "
+    f" -P {snakemake.threads} "
     f" {log}"
 )
 

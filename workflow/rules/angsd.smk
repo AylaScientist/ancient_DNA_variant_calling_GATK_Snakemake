@@ -12,8 +12,8 @@ rule run_angsd:
         mafs="angsd/output.mafs",            # Major/minor allele frequencies
         glf="angsd/output.glf.gz"            # Genotype likelihoods
     params:
-        min_mapq=30,                   # Minimum mapping quality
-        min_baseq=20                   # Minimum base quality
+        min_mapq=20,                   # Minimum mapping quality
+        min_baseq=15                   # Minimum base quality
     log:
         "logs/angsd_snp_calling.log"
     threads: config['threads']

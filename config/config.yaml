@@ -90,7 +90,7 @@ params:
         - "ILLUMINACLIP:.config/TruSeq3-PE-2.fa:2:15:5:2:TRUE "
         - "LEADING:3 "
         - "TRAILING:3 "
-        - "SLIDINGWINDOW:4:15 "
+        #- "SLIDINGWINDOW:4:15 "
         - "MINLEN:30 "
   gatk:
     HaplotypeCaller: ""

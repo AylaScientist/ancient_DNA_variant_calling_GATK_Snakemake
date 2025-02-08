@@ -45,12 +45,12 @@ rule adapter_removal_se:
     script:
         "scripts/adapter_removal_SE.py"
 
-"""
+
 rule trimmomatic_filter:
     input:
         r1 = "trimmed/se/{sample}.fastq.gz",
     output:
-        r1 = ("trimmed/{sample}.1.fastq"),
+        r1 = "trimmed/{sample}.1.fastq",
         # reads where trimming entirely removed the mate
         r1_unpaired = temp("trimmed/{sample}.1.unpaired.fastq"),
     conda:
@@ -70,4 +70,3 @@ rule trimmomatic_filter:
         mem_mb=config['mem_mb_parallel']
     script:
         "scripts/trimmomatic_SE.py"
-"""

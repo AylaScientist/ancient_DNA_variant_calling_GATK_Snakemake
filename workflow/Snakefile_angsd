@@ -15,11 +15,12 @@ print(samples)
 
 rule all:
     input:
-        vcf="variants/GT_SNP.table",
+        #vcf="variants/GT_SNP.table",
+        mafs="angsd/output.mafs",
         dicti= config['ref']['dict'],
         fai= config['ref']['fai'],
         GtoA3p=expand ("results/{sample}/3pGtoA_freq.txt", sample = samples),
-        dbtype="humandb/" + config['params']['annotation']['buildver'] + "_" + config['params']['annotation']['dbtype']+".txt",
+        #dbtype="humandb/" + config['params']['annotation']['buildver'] + "_" + config['params']['annotation']['dbtype']+".txt",
         bam_idx=expand ("marked_dedup/{sample}_ref.bam.bai", sample = samples),
 
 
@@ -28,9 +29,4 @@ rule all:
 include: "rules/pre_processing.smk"     
 include: "rules/mapping.smk"
 include: "rules/post_mapping.smk"
-#include: "rules/angsd.smk"
-
-## For classic SNP calling on not so damaged DNA
-include: "rules/variants_calling.smk"
-include: "rules/annotationHuman.smk"    # WARNING! For annotation of SNP using the ANNOVAR premade database on hg38.
-include: "rules/variants_to_table.smk"
+include: "rules/angsd.smk"
