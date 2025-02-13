@@ -49,19 +49,19 @@ ref:
   # ensembl species name
   species: Homo sapiens
   # ensembl release
-  release: 38
+  release: GCF_000001405.40
   # genome build
   build: hg38
   # file name
-  genome: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.fa"
-  annotation: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.gff3"   #gff3 file
-  gtf: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.gtf"
+  genome: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.fa"
+  annotation: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.gff3"   #gff3 file
+  gtf: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.gtf"
   # index:
   dir: "GRCh38/"
-  bwa_idx: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.amb" # Other extensions: ".ann", ".bwt", ".pac", ".sa"
+  bwa_idx: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.amb" # Other extensions: ".ann", ".bwt", ".pac", ".sa"
   SAindex: "GRCh38/SAindex"
-  dict: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.dict"
-  fai: "GRCh38/Homo_sapiens.GRCh38.113.chromosome.1.fa.fai"
+  dict: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.dict"
+  fai: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.fa.fai"
   read_length: 80 # Read length - 1
   path: "/vivianelabfs/ayla/DNA_variant_calling_GATK_Snakemake/workflow/GRCh38/"
   list: "../config/mthfr.list"

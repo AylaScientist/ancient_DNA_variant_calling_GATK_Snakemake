@@ -1,5 +1,6 @@
 workflow/fastq_merged/
 workflow/GRCh38/
+workflow/GRCh38 (Selective Sync Conflict)/
 previous_backup/
 config/mthfr_backup.list
 workflow/calls/
@@ -11,3 +12,4 @@ DNA_variant_calling_GATK_Snakemake.code
 mthfr_backup.list
 results_mapdamage/
 marked_dedup/
+workflow/angsdput.mafs

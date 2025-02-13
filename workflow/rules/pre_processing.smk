@@ -14,6 +14,26 @@ rule bwa_index:
         "scripts/bwa_index.py"
 
 
+rule genome_dictionary:
+    input:
+        config['ref']['genome'],
+    output:
+        config['ref']["dict"],
+    log:
+        "logs/picard/create_seq_dictionary.log",
+    params:
+        extra="",,  # optional: extra arguments for picard.
+    # optional specification of memory usage of the JVM that snakemake will respect with global
+    # resource restrictions (https://snakemake.readthedocs.io/en/latest/snakefiles/rules.html#resources)
+    # and which can be used to request RAM during cluster job submission as `{resources.mem_mb}`:
+    # https://snakemake.readthedocs.io/en/latest/executing/cluster.html#job-properties
+    threads: config['threads']
+    resources:
+        mem_mb=config['mem_mb']
+    script:
+        "scripts/createsequencedictionary.py"
+
+
 rule samtools_fai:
     input:
         config['ref']['genome'],
@@ -26,29 +46,29 @@ rule samtools_fai:
         (f"samtools faidx {input}")
 
 
-
-rule adapter_removal_se:
+rule fastp_se:
     input:
-        sample = ["fastq_merged/{sample}.fastq.gz"],
+        sample=["fastq_merged/{sample}.fastq.gz"]
     output:
-        fq="trimmed/se/{sample}.fastq.gz",                               # trimmed reads
-        discarded="trimmed/se/{sample}.discarded.fastq.gz",              # reads that did not pass filters
-        settings="adapter_stats/se/{sample}.settings"                    # parameters as well as overall statistics
+        trimmed="trimmed/se/{sample}.fastq",
+        failed="trimmed/se/{sample}.failed.fastq",
+        html="trimmed/report/se/{sample}.html",
+        json="trimmed/report/se/{sample}.json"
     log:
-        "logs/adapterremoval/se/{sample}.log"
+        "logs/fastp/se/{sample}.log"
     params:
-        adapters=config['params']['adapters'],
-        extra="",
+        adapters="", #"--adapter_sequence ACGGCTAGCTA",
+        extra=""
     threads: config['threads_parallel']
     resources:
         mem_mb=config['mem_mb_parallel']
     script:
-        "scripts/adapter_removal_SE.py"
+        "scripts/fastp.py"
 
 
 rule trimmomatic_filter:
     input:
-        r1 = "trimmed/se/{sample}.fastq.gz",
+        r1 = "trimmed/se/{sample}.fastq",
     output:
         r1 = "trimmed/{sample}.1.fastq",
         # reads where trimming entirely removed the mate
