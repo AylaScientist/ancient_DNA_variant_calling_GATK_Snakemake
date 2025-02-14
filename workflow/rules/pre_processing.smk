@@ -16,13 +16,14 @@ rule bwa_index:
 
 rule genome_dictionary:
     input:
-        config['ref']['genome'],
+        gen = config['ref']['genome'],
     output:
-        config['ref']["dict"],
+        dicti = config['ref']["dict"],
     log:
         "logs/picard/create_seq_dictionary.log",
     params:
-        extra="",,  # optional: extra arguments for picard.
+        java_opts=config['java_opts'],
+        extra="", # optional: extra arguments for picard.
     # optional specification of memory usage of the JVM that snakemake will respect with global
     # resource restrictions (https://snakemake.readthedocs.io/en/latest/snakefiles/rules.html#resources)
     # and which can be used to request RAM during cluster job submission as `{resources.mem_mb}`:
