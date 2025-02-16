@@ -87,7 +87,7 @@ params:
       trimmer:
         # See trimmomatic manual for adding additional options, e.g. for adapter trimming.
         # Adapted for aDNA
-        - "ILLUMINACLIP:.config/TruSeq3-PE-2.fa:2:15:5:2:TRUE "
+        #- "ILLUMINACLIP:.config/TruSeq3-PE-2.fa:2:15:5:2:TRUE "
         - "LEADING:3 "
         - "TRAILING:3 "
         #- "SLIDINGWINDOW:4:15 "
