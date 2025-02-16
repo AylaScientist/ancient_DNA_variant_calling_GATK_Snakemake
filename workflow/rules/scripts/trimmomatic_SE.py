@@ -98,7 +98,7 @@ output_r1, output_r1_unp, = [
 ]
 
 shell(
-    "java -jar trimmomatic.jar SE -phred33 {trimmomatic_threads} {java_opts} {extra} "
+    "java -jar /powerapps/share/centos7/trimmomatic/0.39/trimmomatic-0.39.jar SE -phred33 {trimmomatic_threads} {java_opts} {extra} "
     "{input_r1} "
     "{output_r1} {output_r1_unp} "
     "{trimmer} "
