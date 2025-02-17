@@ -73,7 +73,7 @@ rule trimmomatic_filter:
     output:
         r1 = "trimmed/{sample}.1.fastq",
         # reads where trimming entirely removed the mate
-        r1_unpaired = temp("trimmed/{sample}.1.unpaired.fastq"),
+        #r1_unpaired = temp("trimmed/{sample}.1.unpaired.fastq"),
     conda:
         "envs/trimmomatic.yaml"
     log:
@@ -85,7 +85,8 @@ rule trimmomatic_filter:
         extra = "",
         java_opts = "", # config['java_opts_parallel'],
         path = config['params']['trimmomatic']['path'],
-        tempdir = "./trimmomatic_tempdir"
+        tempdir = "./trimmomatic_tempdir",
+        r1_unpaired = "trimmed/{sample}.1.unpaired.fastq",
     threads: config['threads_parallel']
     resources:
         mem_mb=config['mem_mb_parallel']

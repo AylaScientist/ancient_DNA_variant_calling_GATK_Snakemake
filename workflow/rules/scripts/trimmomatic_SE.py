@@ -81,7 +81,6 @@ trimmer = " ".join(snakemake.params.trimmer)
 input_files = [snakemake.input.r1]
 output_files = [
     snakemake.output.r1,
-    snakemake.output.r1_unpaired,
 ]
 
 trimmomatic_threads, input_threads, output_threads = distribute_threads(
@@ -92,7 +91,7 @@ input_r1 = [
     compose_input_gz(filename, input_threads) for filename in input_files
 ]
 
-output_r1, output_r1_unp, = [
+output_r1 = [
     compose_output_gz(filename, output_threads, compression_level)
     for filename in output_files
 ]
@@ -100,8 +99,8 @@ output_r1, output_r1_unp, = [
 shell(
     "java {java_opts} -jar /powerapps/share/centos7/trimmomatic/0.39/trimmomatic-0.39.jar SE "
     "-threads {trimmomatic_threads} -phred33 {extra} "
-    "{input_r1} "
-    "{output_r1} "# {output_r1_unp} "
+    "{snakemake.input.r1} "
+    "{snakemake.output.r1} "# {output_r1_unp} "
     "{trimmer} "
     "{log}"
 )
