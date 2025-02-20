@@ -22,12 +22,12 @@ rule map_damage:
     script:
         "scripts/mapdamage2.py"
 
-
+"""
 rule add_replace_rg:
     input:
         "bam/{sample}.bam",
     output:
-        "fixed-rg/{sample}_ref.bam"
+        "fixed-rg/{sample}.bam"
     conda:
         "envs/picard.yaml"
     log:
@@ -40,14 +40,40 @@ rule add_replace_rg:
         mem_mb=config['mem_mb_parallel']
     script:
         "scripts/readgroups.py"
+"""
+
+
+rule validate_bam:
+    input:
+        "bam/{sample}.bam"
+    output:
+        "logs/validate_bam/{sample}.summary.txt"
+    conda:
+        "envs/picard.yaml"
+    log:
+        "logs/validate/{sample}.log"
+    threads: 1  # Validation doesn't need multi-threading
+    resources:
+        mem_mb=8  # Adjust based on available memory
+    shell:
+        """
+        set -euo pipefail
+
+        picard ValidateSamFile \
+            I={input} \
+            O={output} \
+            MODE=SUMMARY \
+            VALIDATION_STRINGENCY=STRICT \
+            2> {log}
+        """
 
 
 rule mark_duplicates:
     input:
-        "fixed-rg/{sample}_ref.bam"
+        "bam/{sample}.bam"
     output:
-        bam="marked_dedup/{sample}_ref.bam",
-        metrics="marked_dedup/{sample}_ref.metrics.txt"
+        bam="marked_dedup/{sample}.bam",
+        metrics="marked_dedup/{sample}.metrics.txt"
     conda:
         "envs/picard.yaml"
     log:
@@ -64,9 +90,9 @@ rule mark_duplicates:
 
 rule samtools_index:
     input:
-        "marked_dedup/{sample}_ref.bam",
+        "marked_dedup/{sample}.bam",
     output:
-        "marked_dedup/{sample}_ref.bam.bai",
+        "marked_dedup/{sample}.bam.bai",
     log:
         "logs/samtools_index/{sample}.log",
     params:
@@ -76,3 +102,27 @@ rule samtools_index:
         mem_mb=config['mem_mb_parallel']
     script:
         "scripts/samtools_index.py"
+
+
+rule pmdtools:
+    input:
+        bam="marked_dedup/{sample}.bam",
+    output:
+        filtered_bam="filtered_pmd/{sample}.pmd.bam",
+    log:
+        "logs/pmdtools/{sample}.log"
+    params:
+        options="--deamination -p --threshold=3"  # Modify options as needed 
+    threads: config['threads_parallel']
+    resources:
+        mem_mb=config['mem_mb_parallel']
+    shell:
+        """
+        # Filter damage
+        samtools view -h {input.bam} | \
+        python pmdtools {params.options} | \
+        samtools view -b -o {output.filtered_bam} \
+
+        # Index the filtered BAM file
+        samtools index {output.filtered_bam}
+        """

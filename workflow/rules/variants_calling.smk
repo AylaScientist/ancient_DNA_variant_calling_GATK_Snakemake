@@ -1,11 +1,11 @@
 rule haplotype_caller_gene:
     input:
-        bam="marked_dedup/{sample}_ref.bam",
-        index = "marked_dedup/{sample}_ref.bam.bai",
+        bam="filtered_pmd/{sample}.pmd.bam",
+        #index = "filtered_pmd/{sample}.pmd.bam.bai",
         ref=config['ref']['genome'],
         l_genes=config['ref']['list'],
     output:
-        gvcf="calls/{sample}_ref.g.vcf"
+        gvcf="calls/{sample}.g.vcf"
     conda:
         "envs/gatk.yaml"
     log:
@@ -22,10 +22,10 @@ rule haplotype_caller_gene:
 
 rule combine_gvcfs:
     input:
-        gvcfs=expand("calls/{sample}_ref.g.vcf", sample = samples),
+        gvcfs=expand("calls/{sample}.g.vcf", sample = samples),
         ref=config['ref']['genome']
     output:
-        gvcf="calls/all_ref_g.vcf"
+        gvcf="calls/all_g.vcf"
     conda:
         "envs/gatk.yaml"
     log:
@@ -42,10 +42,10 @@ rule combine_gvcfs:
 
 rule genotype_gvcfs:
     input:
-        gvcf="calls/all_ref_g.vcf",  # combined gvcf over multiple samples
+        gvcf="calls/all_g.vcf",  # combined gvcf over multiple samples
         ref=config['ref']['genome']
     output:
-        vcf="calls/all_ref.vcf",
+        vcf="calls/all.vcf",
     conda:
         "envs/gatk.yaml"
     log:
@@ -62,7 +62,7 @@ rule genotype_gvcfs:
 
 rule select_filter_variants:
     input:
-        vcf="calls/all_ref.vcf",
+        vcf="calls/all.vcf",
         ref=config['ref']['genome']
     output:
         vcf="calls/selected.vcf"

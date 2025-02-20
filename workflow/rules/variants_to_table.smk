@@ -7,7 +7,7 @@ rule gatk_variantstotable:
     conda:
         "envs/gatk.yaml"
     log:
-        "logs/gatk/var2table/snvs_ref.log"
+        "logs/gatk/var2table/snvs.log"
     params:
         o1="annotated/annotated_all_snps_"+config['params']['annotation']['output'],
         extra="-SMA TRUE -F CHROM -F POS -F Gene.refGene -F Func.refGene -F ExonicFunc.refGene -F AF -GF GT",  # optional filter arguments, see GATK docs
