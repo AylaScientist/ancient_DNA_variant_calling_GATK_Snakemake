@@ -47,7 +47,7 @@ rule validate_bam:
     input:
         "bam/{sample}.bam"
     output:
-        "logs/validate_bam/{sample}.summary.txt"
+        "logs/validate/{sample}.log"
     conda:
         "envs/picard.yaml"
     log:
@@ -88,11 +88,47 @@ rule mark_duplicates:
         "scripts/mark_duplicates.py"
 
 
+rule pmdtools:
+    input:
+        bam="marked_dedup/{sample}.bam",
+    output:
+        filtered_bam="filtered_pmd/{sample}.bam",
+    log:
+        "logs/pmdtools/{sample}.log"
+    params:
+        options="--deamination --threshold=3 --header",  # Modify options as needed 
+        temp_sam="temp{sample}.sam",
+        temp_filtered="temp{sample}_filtered.sam"
+    threads: config['threads_parallel']
+    resources:
+        mem_mb=config['mem_mb_parallel']
+    shell:
+       """
+        # Convert BAM to SAM and remove reads with malformed quality scores
+        samtools view -h {input.bam} | awk 'length($10) == length($11)' > > {params.temp_sam}
+
+        # Run PMDTools, logging errors
+        python /vivianelabfs/ayla/envs/Snakemake-5.30.1/bin/pmdtools {params.options} < {params.temp_sam} > {params.temp_filtered} 2> {log}
+
+        # Ensure PMDTools produced output before proceeding
+        if [ ! -s {params.temp_filtered} ]; then
+            echo "Error: PMDTools did not generate a valid SAM file" >> {log}
+            exit 1
+        fi
+
+        # Convert filtered SAM back to BAM
+        samtools view -b -o {output.filtered_bam} {params.temp_filtered}
+
+        # Clean up
+        rm temp.sam {params.temp_filtered}
+        """
+
+
 rule samtools_index:
     input:
-        "marked_dedup/{sample}.bam",
+        "filtered_pmd/{sample}.bam",
     output:
-        "marked_dedup/{sample}.bam.bai",
+        "filtered_pmd/{sample}.bam.bai",
     log:
         "logs/samtools_index/{sample}.log",
     params:
@@ -102,27 +138,3 @@ rule samtools_index:
         mem_mb=config['mem_mb_parallel']
     script:
         "scripts/samtools_index.py"
-
-
-rule pmdtools:
-    input:
-        bam="marked_dedup/{sample}.bam",
-    output:
-        filtered_bam="filtered_pmd/{sample}.pmd.bam",
-    log:
-        "logs/pmdtools/{sample}.log"
-    params:
-        options="--deamination -p --threshold=3"  # Modify options as needed 
-    threads: config['threads_parallel']
-    resources:
-        mem_mb=config['mem_mb_parallel']
-    shell:
-        """
-        # Filter damage
-        samtools view -h {input.bam} | \
-        python pmdtools {params.options} | \
-        samtools view -b -o {output.filtered_bam} \
-
-        # Index the filtered BAM file
-        samtools index {output.filtered_bam}
-        """

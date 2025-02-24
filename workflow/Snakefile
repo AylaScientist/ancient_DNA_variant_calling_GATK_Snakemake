@@ -15,13 +15,13 @@ print(samples)
 
 rule all:
     input:
-        vcf="variants/GT_SNP.table",
+        #vcf="variants/GT_SNP.table",
         dicti= config['ref']['dict'],
         fai= config['ref']['fai'],
         GtoA3p=expand ("results/{sample}/3pGtoA_freq.txt", sample = samples),
         dbtype="humandb/" + config['params']['annotation']['buildver'] + "_" + config['params']['annotation']['dbtype']+".txt",
-        bam_idx=expand ("marked_dedup/{sample}_ref.bam.bai", sample = samples),
-        valid = expand ("logs/validate_bam/{sample}.summary.txt", sample = samples),
+        bam_idxxzssxdwz=expand ("filtered_pmd/{sample}.bam.bai", sample = samples),
+        valid = expand ("logs/validate/{sample}.log", sample = samples),
         flagstat = expand ("bam/{sample}.bam.flagstat", sample = samples)
 
 
