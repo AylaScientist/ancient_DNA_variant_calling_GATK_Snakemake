@@ -67,6 +67,14 @@ ref:
   list: "../config/mthfr.list"
   bed: "../config/target_snps.bed"
 
+
+mapping:
+  extra: "-Y -R '@RG\\tID:{sample}\\tSM:{sample}'" # preserves soft clip (-Y) and adds read groups
+  sorting: "samtools"  # Can be 'none', 'samtools' or 'picard'.
+  sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
+  sort_extra: ""  # Extra args for samtools/picard.
+  
+
 filtering:
   # Set to true in order to apply machine learning based recalibration of
   # quality scores instead of hard filtering.

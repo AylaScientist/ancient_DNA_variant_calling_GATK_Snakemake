@@ -7,10 +7,10 @@ rule bwa_mem:
     log:
         "logs/bwa_mem/{sample}.log",
     params:
-        extra=r"-R '@RG\tID:{sample}\tSM:{sample}'",
-        sorting="samtools",  # Can be 'none', 'samtools' or 'picard'.
-        sort_order="coordinate",  # Can be 'queryname' or 'coordinate'.
-        sort_extra="",  # Extra args for samtools/picard.
+        extra=config['mapping']['extra'],
+        sorting=config['mapping']['sorting'],  # Can be 'none', 'samtools' or 'picard'.
+        sort_order=config['mapping']['sort_order'],  # Can be 'queryname' or 'coordinate'.
+        sort_extra=config['mapping']['sort_extra'],  # Extra args for samtools/picard.
         java_opts=config['java_opts_parallel']
     threads: config['threads_parallel']
     resources:
