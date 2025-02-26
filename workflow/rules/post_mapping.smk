@@ -47,7 +47,7 @@ rule validate_bam:
     input:
         "bam/{sample}.bam"
     output:
-        "logs/validate/{sample}.log"
+        "logs/validate_out/{sample}.log"
     conda:
         "envs/picard.yaml"
     log:
@@ -65,6 +65,7 @@ rule validate_bam:
             MODE=SUMMARY \
             VALIDATION_STRINGENCY=STRICT \
             2> {log}
+        cp {log} {output}
         """
 
 
@@ -97,8 +98,8 @@ rule pmdtools:
         "logs/pmdtools/{sample}.log"
     params:
         options="--deamination --threshold=3 --header",  # Modify options as needed 
-        temp_sam="temp{sample}.sam",
-        temp_filtered="temp{sample}_filtered.sam"
+        temp_sam="pmd_temp/temp{sample}.sam",
+        temp_filtered="pmd_temp/temp{sample}_filtered.sam"
     threads: config['threads_parallel']
     resources:
         mem_mb=config['mem_mb_parallel']
@@ -117,7 +118,7 @@ rule pmdtools:
         fi
 
         # Convert filtered SAM back to BAM
-        samtools view -b -o {output.filtered_bam} {params.temp_filtered}
+        samtools view -bo {output.filtered_bam} {params.temp_filtered}
 
         # Clean up
         rm temp.sam {params.temp_filtered}
