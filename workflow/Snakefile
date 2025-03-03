@@ -22,7 +22,7 @@ rule all:
         dbtype="humandb/" + config['params']['annotation']['buildver'] + "_" + config['params']['annotation']['dbtype']+".txt",
         dedup=expand('marked_dedup/{sample}.bam', sample = samples),
         #bam_idx=expand ("filtered_pmd/{sample}.bam.bai", sample = samples),
-        #valid = expand ("logs/validate_out/{sample}.log", sample = samples),
+        valid = expand ("logs/validate_out/{sample}.log", sample = samples),
         flagstat = expand ("bam/{sample}.bam.flagstat", sample = samples)
 
 

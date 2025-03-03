@@ -15,3 +15,5 @@ marked_dedup/
 workflow/angsdput.mafs
 GUI_screenshots/
 workflow/bam
+calls/
+calls_previous/

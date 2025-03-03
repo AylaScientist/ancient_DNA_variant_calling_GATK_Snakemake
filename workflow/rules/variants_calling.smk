@@ -1,7 +1,7 @@
 rule haplotype_caller_gene:
     input:
-        bam="filtered_pmd/{sample}.pmd.bam",
-        #index = "filtered_pmd/{sample}.pmd.bam.bai",
+        bam="filtered_pmd/{sample}.bam",
+        index = "filtered_pmd/{sample}.bam.bai",
         ref=config['ref']['genome'],
         l_genes=config['ref']['list'],
     output:
