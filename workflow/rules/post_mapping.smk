@@ -111,7 +111,7 @@ rule pmdtools:
     log:
         "logs/pmdtools/{sample}.log"
     params:
-        options="--deamination --threshold=0 --header",  # Modify options as needed 
+        options="--threshold=3 --header",  # Modify options as needed 
         #temp_sam="pmd_temp/temp{sample}.sam",
         #temp_filtered="pmd_temp/temp{sample}_filtered.sam",
         temp_fixed="pmd_temp/temp{sample}_fixed.sam",
@@ -126,6 +126,29 @@ rule pmdtools:
         """
 
 
+rule pmdtools_deamination:
+    input:
+        sam="pmd_temp/temp{sample}.sam",
+    output:
+        pmd="pmd_temp/temp{sample}_stats.sam",
+    log:
+        "logs/pmdtools/{sample}.log"
+    params:
+        options="--deamination",  # Modify options as needed 
+        #temp_sam="pmd_temp/temp{sample}.sam",
+        #temp_filtered="pmd_temp/temp{sample}_filtered.sam",
+        temp_fixed="pmd_temp/temp{sample}_fixed.sam",
+        stats="filtered_pmd/{sample}.stats"
+    threads: config['threads_parallel']
+    resources:
+        mem_mb=config['mem_mb_parallel']
+    shell:
+       """
+        # Run PMDTools, logging errors
+        python /vivianelabfs/ayla/envs/Snakemake-5.30.1/bin/pmdtools {params.options} < {input.sam} > {output.pmd}
+        """
+
+"""
 rule fix_sam:
     input:
         pmd="pmd_temp/temp{sample}_filtered.sam",
@@ -139,36 +162,36 @@ rule fix_sam:
     resources:
         mem_mb=config['mem_mb_parallel']
     shell:
-        """
         # Convert the generated file into a sam file and a stats table
-        awk '{{if ($0 ~ /^@/) print > "{input.pmd}"; else print > "{params.stats}"}}' {input.pmd} > {output.fix}
-        """
-
+        #awk '{{if ($0 ~ /^@/) print > "{input.pmd}"; else print > "{params.stats}"}}' {input.pmd} > {output.fix}
+        
+"""
 
 rule sam2bam:
     input:
-        fix="pmd_temp/temp{sample}_fixed.sam",
+        fix="pmd_temp/temp{sample}_filtered.sam",
     output:
         pmd="filtered_pmd/{sample}.bam",
     log:
-        "logs/samtools/sam2bam{sample}.log"
+        "logs/samtools/sam2bam/{sample}.log"
     params:
         extra="",
     threads: config['threads_parallel']
     resources:
         mem_mb=config['mem_mb_parallel']
     shell:
-       """ # Convert filtered SAM back to BAM
-        #samtools view -bo {output.pmd} {input.fix}
+        """ 
+        # Convert filtered SAM back to BAM
+        samtools view -bo {output.pmd} {input.fix}
         """
 
 
 
 rule samtools_index:
     input:
-        "marked_dedup/{sample}.bam",
+        "filtered_pmd/{sample}.bam",
     output:
-        "marked_dedup/{sample}.bam.bai",
+        "filtered_pmd/{sample}.bam.bai",
     log:
         "logs/samtools_index/{sample}.log",
     params:
