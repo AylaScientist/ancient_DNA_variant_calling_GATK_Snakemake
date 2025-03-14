@@ -4,7 +4,7 @@ workflow/GRCh38 (Selective Sync Conflict)/
 previous_backup/
 config/mthfr_backup.list
 workflow/calls/
-workflow/GRCh38/
+workflow/GRCh38_chr1/
 humandb/
 .snakemake/
 .gitignore
@@ -16,4 +16,5 @@ workflow/angsdput.mafs
 GUI_screenshots/
 workflow/bam
 calls/
-calls_previous/
+calls_previous_pipeline_version/
+calls_preliminary_results_mapping_CHR1/

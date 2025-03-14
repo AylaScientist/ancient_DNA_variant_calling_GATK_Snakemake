@@ -66,7 +66,7 @@ rule annotate:
         buildver= config['params']['annotation']['buildver'],
         dbtype="humandb/" + config['params']['annotation']['buildver'] + "_" + config['params']['annotation']['dbtype']+".txt",
     output:
-        o2=config['params']['annotation']['output_annotate'] + ".exonic_variant_function"
+        o2=config['params']['annotation']['convert'] + ".hg38_avsnp151"
     params:
         i2=config['params']['annotation']['output_annotate'],
         dbtype=config['params']['annotation']['dbtype'],
@@ -81,13 +81,14 @@ rule annotate:
     shell:
         #"perl ./rules/scripts/annotate_variation.pl -geneanno {input.i1} -buildver {input.buildver} ./ -outfile {params.i2}" #for annotating genes
         #"perl ./rules/scripts/annotate_variation.pl -geneanno {input.i1} -buildver hg19 -downdb -webfrom annovar refGene {params.path}/ -outfile {params.i2}" #To download the db for annotating genes
-        "perl ./rules/scripts/annotate_variation.pl -filter -buildver {input.buildver} -dbtype {params.dbtype} {params.path}/ -outfile {params.i2}" #for annotating SNPs
+        #"perl ./rules/scripts/annotate_variation.pl -filter -buildver {input.buildver} -dbtype {params.dbtype} -out {output.o2} {input.i1} {params.path}/" #for annotating SNPs
+        "perl ./rules/scripts/annotate_variation.pl -regionanno -buildver {input.buildver} -dbtype {params.dbtype} {output.o2} {input.i1} {params.path}/" #for annotating SNPs
 
 
 # Make tokens for the tables with the annotation:
 rule token_table:
     input:
-        config['params']['annotation']['output_annotate']+".exonic_variant_function"
+        config['params']['annotation']['convert'] + ".hg38_avsnp151"
     output:
         "annotated/annotated_all_snps_"
     shell:
@@ -98,7 +99,7 @@ rule token_table:
 rule an_table:
     input:
         i1=config['params']['annotation']['convert'],
-        i2=config['params']['annotation']['output_annotate']+".exonic_variant_function",
+        i2=config['params']['annotation']['convert'] + ".hg38_avsnp151",
         i3="annotated/annotated_all_snps_",
         gvcf1="calls/selected.vcf",
         path=config['params']['annotation']['path'], #Path to the database (buildver)
@@ -111,4 +112,4 @@ rule an_table:
     conda:
         "envs/perl.yaml"
     shell:
-        "perl ./rules/scripts/table_annovar.pl {input.gvcf1} {input.path} -buildver {input.buildver} -out {input.i3} -remove -protocol refGene -operation g -nastring . -vcfinput"
+        "perl ./rules/scripts/table_annovar.pl {input.gvcf1} {input.path} -buildver {input.buildver} -out {input.i3} -remove -protocol avsnp151 -operation g -nastring . -vcfinput"

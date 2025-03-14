@@ -109,11 +109,11 @@ params:
     MarkDuplicates: "REMOVE_DUPLICATES=false"
   annotation:
     buildver: "hg38"
-    pathbuild: "GRCh38/hg38"
-    path: "GRCh38"
+    pathbuild: "humandb/hg38"
+    path: "humandb"
     dbtype: "avsnp151" #avsnp150 for hg19
-    output: ".hg38_multianno.vcf"
-    extra: "-SMA TRUE -F CHROM -F POS -F Gene.refGene -F Func.refGene -F ExonicFunc.refGene -F AF -GF AD -GF GT"
+    output: ".hg38_avsnp151.vcf"
+    extra: "-SMA TRUE -F CHROM -F POS -F Gene.avsnp151 -F Func.avsnp151 -F ExonicFunc.avsnp151 -F AF -GF AD -GF GT"
     #Change the name of the example species (Mozambique) into your studied species
     convert: "annotated/annovar_Homo_sapiens_"
     output_annotate: "annotated/annotated_Homo_sapiens_snps_"
