@@ -92,3 +92,6 @@ rule trimmomatic_filter:
         mem_mb=config['mem_mb_parallel']
     script:
         "scripts/trimmomatic_SE.py"
+
+
+# Add quality test for trimming: How many reads are before and after, plus check the lengths: distribution of the lengths. To see if what I trimmed out makes sense.

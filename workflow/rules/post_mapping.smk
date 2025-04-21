@@ -79,7 +79,7 @@ rule mark_duplicates:
     log:
         "logs/picard/dedup/{sample}.log"
     params:
-        extra = "REMOVE_DUPLICATES=true", #Duplicates can also be removed with UMI-tools
+        extra = "REMOVE_DUPLICATES=false", #Duplicates can also be removed with UMI-tools
         java_opts=config['java_opts_parallel'],
     threads: config['threads_parallel']
     resources:
@@ -189,9 +189,9 @@ rule sam2bam:
 
 rule samtools_index:
     input:
-        "filtered_pmd/{sample}.bam",
+        "bam/{sample}.bam",
     output:
-        "filtered_pmd/{sample}.bam.bai",
+        "bam/{sample}.bam.bai",
     log:
         "logs/samtools_index/{sample}.log",
     params:

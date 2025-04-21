@@ -1,4 +1,3 @@
-
 rule bwa_aln:
     input:
         fastq="trimmed/{sample}.1.fastq",

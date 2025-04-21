@@ -18,3 +18,7 @@ workflow/bam
 calls/
 calls_previous_pipeline_version/
 calls_preliminary_results_mapping_CHR1/
+calls_final_version/
+calls_bam_mem/
+calls_pmd_t2/
+calls_pmd_t3/

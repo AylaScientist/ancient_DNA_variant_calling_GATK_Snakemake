@@ -19,6 +19,7 @@ rule bwa_mem:
         "scripts/bwa_mem.py"
 
 
+# Control for mapping, to check if the alternative alleles have been massively discarded
 rule samtools_flagstat:
     input:
         "bam/{sample}.bam",

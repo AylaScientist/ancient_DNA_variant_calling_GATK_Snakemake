@@ -83,7 +83,7 @@ filtering:
     # hard filtering as outlined in GATK docs
     # (https://gatkforums.broadinstitute.org/gatk/discussion/2806/howto-apply-hard-filters-to-a-call-set)
     snvs:
-      "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0"
+      "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0" # MQ < 20 for ancient DNA
     indels:
       "QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0"
 
@@ -111,9 +111,9 @@ params:
     buildver: "hg38"
     pathbuild: "humandb/hg38"
     path: "humandb"
-    dbtype: "avsnp151" #avsnp150 for hg19
+    dbtype: "hg38_avsnp151" #avsnp150 for hg19
     output: ".hg38_avsnp151.vcf"
-    extra: "-SMA TRUE -F CHROM -F POS -F Gene.avsnp151 -F Func.avsnp151 -F ExonicFunc.avsnp151 -F AF -GF AD -GF GT"
+    extra: "-SMA TRUE -F CHROM -F POS -F Gene.hg38_avsnp151 -F Func.hg38_avsnp151 -F ExonicFunc.hg38_avsnp151 -F AF -GF AD -GF GT"
     #Change the name of the example species (Mozambique) into your studied species
     convert: "annotated/annovar_Homo_sapiens_"
     output_annotate: "annotated/annotated_Homo_sapiens_snps_"
