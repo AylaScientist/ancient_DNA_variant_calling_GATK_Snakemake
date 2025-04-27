@@ -54,7 +54,8 @@ ref:
   build: hg38
   # file name
   genome: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.fa"
-  annotation: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.gff3"   #gff3 file
+  #genome: "Homo_sapiens.GRCh38.113.chromosome.1.fa"
+  annotation: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.gff3"
   gtf: "GRCh38/GCF_000001405.40_GRCh38.p14_genomic.gtf"
   # index:
   dir: "GRCh38/"
@@ -105,8 +106,20 @@ params:
     BaseRecalibrator: ""
     GenotypeGVCFs: ""
     VariantRecalibrator: ""
+    pcr_errors: "--pcr-indel-model NONE "
+    min_qual: "--min-base-quality-score 20 "
+    prunning: "--min-pruning 1 "
+    soft_clipp: "--dont-use-soft-clipped-bases false "
+    min_phred: "--standard-min-confidence-threshold-for-calling 10.0"
+  
+  atlas:
+    min_mapq: 30
+    min_read_length: 30
+    region: "NC_000001.11:11785723-11805964" #region to call SNPs from
+  
   picard:
     MarkDuplicates: "REMOVE_DUPLICATES=false"
+  
   annotation:
     buildver: "hg38"
     pathbuild: "humandb/hg38"

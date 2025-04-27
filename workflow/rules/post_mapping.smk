@@ -185,8 +185,6 @@ rule sam2bam:
         samtools view -bo {output.pmd} {input.fix}
         """
 
-
-
 rule samtools_index:
     input:
         "bam/{sample}.bam",
