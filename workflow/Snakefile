@@ -36,7 +36,7 @@ include: "rules/post_mapping.smk"
 #include: "rules/angsd.smk"
 
 ## For Atlas
-include: "rules/atlas.smk"
+include: "rules/atlas_soft_clip.smk"
 include: "rules/select_variants.smk"
 
 ## For GATK haplotype caller tool, classic SNP calling on not so damaged DNA:

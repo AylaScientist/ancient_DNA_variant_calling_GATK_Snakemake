@@ -1,20 +1,3 @@
-rule trim_soft_clips:
-    input:
-        "filtered_pmd/{sample}.bam",
-    output:
-        "atlas/{sample}.trimmed_softClippedBasesRemoved.bam"
-    params:
-        prefix= "atlas/{sample}.trimmed"
-    threads: config['threads_parallel']
-    resources:
-        mem_mb=config['mem_mb_parallel']
-    log: "logs/atlas/trim_soft_clip/{sample}.log"
-    shell:
-        """
-        atlas task=removeSoftClippedBases bam={input} out={params.prefix} > {log} 2>&1
-        """
-
-
 rule filter_bam:
     input:
         "atlas/{sample}.trimmed_softClippedBasesRemoved.bam"

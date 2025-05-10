@@ -1,6 +1,44 @@
+rule gzip_on_vcfs:
+    input:
+        "calls_atlas/{sample}_MaximumLikelihood.vcf.gz"
+    output:
+        "calls_atlas/{sample}_MaximumLikelihood.vcf"
+    params:
+        backup = "calls_backup/{sample}_MaximumLikelihood.vcf.gz"
+    shell:
+        """
+        #cp {input} {params.backup}
+        gunzip {input}
+        """
+
+rule copy_vcfs:
+    input:
+        "calls_atlas/{sample}_MaximumLikelihood.vcf"
+    output:
+        "calls_atlas_bgzip/{sample}_MaximumLikelihood.vcf"
+    params:
+        "calls_atlas_bgzip/"
+    shell:
+        """
+        cp {input} {params}
+        """
+
+
+rule bgzip_on_vcfs:
+    input:
+        "calls_atlas_bgzip/{sample}_MaximumLikelihood.vcf"
+    output:
+        "calls_atlas_bgzip/{sample}_MaximumLikelihood.vcf.gz"
+    log: "logs/bgzip/{sample}.log"
+    shell:
+        """
+        bgzip {input} > {log} 2>&1
+        tabix {output}
+        """    
+
 rule merge_atlas_vcfs:
     input:
-        expand("calls_atlas/{sample}_MaximumLikelihood.vcf.gz", sample = samples),
+        expand("calls_atlas_bgzip/{sample}_MaximumLikelihood.vcf.gz", sample = samples),
     output:
         "calls_atlas/all_atlas.vcf.gz"
     conda:
@@ -20,7 +58,7 @@ rule index_merged_vcf:
     input:
         "calls_atlas/all_atlas.vcf.gz"
     output:
-        "calls_atlas/all_atlas.vcf.gz.csi"
+        "calls_atlas/all_atlas.vcf.gz.tbi"
     conda:
         "envs/bcftools.yaml"
     log:
@@ -30,7 +68,7 @@ rule index_merged_vcf:
         mem_mb=config["mem_mb_combine"]
     shell:
         """
-        bcftools index --csi {input} > {log} 2>&1
+        bcftools index --tbi {input} > {log} 2>&1
         """
 
 
@@ -38,7 +76,7 @@ rule select_filter_variants:
     input:
         vcf="calls_atlas/all_atlas.vcf.gz",
         ref=config['ref']['genome'],
-        idx="calls_atlas/all_atlas.vcf.gz.csi"
+        idx="calls_atlas/all_atlas.vcf.gz.tbi"
     output:
         vcf="calls_atlas/selected_atlas.vcf.gz"
     conda:
