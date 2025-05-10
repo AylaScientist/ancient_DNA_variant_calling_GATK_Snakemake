@@ -113,7 +113,8 @@ params:
     min_phred: "--standard-min-confidence-threshold-for-calling 10.0"
   
   atlas:
-    min_mapq: 30
+    depth: 20
+    min_mapq: 10
     min_read_length: 30
     region: "NC_000001.11:11785723-11805964" #region to call SNPs from
   
